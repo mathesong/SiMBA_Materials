@@ -1,5 +1,10 @@
+library(here)
 library(rmarkdown)
 
-render("R/SiMBA_Demonstration.Rmd", output_format = "all")
+setwd(here::here("R"))
 
-file.rename("R/SiMBA_Demonstration.md", "R/README.md")
+render("SiMBA_Demonstration.Rmd", output_format = "all")
+
+file.rename("SiMBA_Demonstration.md", "README.md")
+
+setwd(here::here())

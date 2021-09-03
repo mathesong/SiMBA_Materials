@@ -836,7 +836,8 @@ job::job({
 
 })
 ```
-Now we have fitted the model.  Unfortunately `rstan` does not present its output in a particularly attractive manner.
+
+Now we have fitted the model.  Unfortunately `rstan` is a little bit difficult to read when the variable names are created by `brms`.
 
 ```{r}
 stanfit <- readRDS("../DerivedData/simdat_simbafit.rds")
@@ -866,7 +867,7 @@ brmsfit <- rename_pars(brmsfit)
 
 # Evaluating the model
 
-And now the output is much more focused on the relevant parameters.
+And now the output is much more easier to read.
 
 ```{r}
 brmsfit
@@ -892,25 +893,40 @@ abline(v=100*(exp(0.182)-1),col="red")
 ```
 
 
-Now we can see the posterior probability.  We can also examine the quantiles to help us interpret the probability.
-
-```{r}
-quantile(groupdif_samples, seq(0.05, 0.95, by=0.05))
-```
-
-We could also examine what the probability that the parameter is above zero.
+We can also examine what the probability that the parameter is above zero, or the 95% credible intervals.
 
 
 ```{r}
 mean(groupdif_samples > 0)
+quantile(groupdif_samples, c(0.025, 0.975))
 ```
 
 
-With `brms`, we can also easily plot the estimated `sigma` spline.
+With `brms`, we can also easily plot the estimated `sigma` spline.  Note that this is log(sigma)
 
 ```{r}
 conditional_smooths(brmsfit)
 ```
+
+If we want to compare this to the simulated data, we can just transform it
+
+```{r}
+smoothfit <- conditional_smooths(brmsfit)$`sigma: s(t_tac)` %>% 
+  as_tibble() %>% 
+  mutate(estimate__ = exp(estimate__),
+         lower__ = exp(lower__),
+         upper__ = exp(upper__))
+
+ggplot(smoothfit, aes(y=estimate__, x=t_tac)) + 
+  geom_line() +
+  geom_ribbon(aes(ymin=lower__, ymax=upper__), alpha=0.2) +
+  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="blue") +
+  labs(x="Time (min)",
+       y="Relative Measurement Error",
+       title="Fitted Smooth Function for Measurement Error",
+       subtitle="Fitted measurement error function in black with the grey 95% credible\ninterval with the true function in blue")
+```
+
 
 
 We could also, for example, examine the different estimated V~ND~ and v~B~ values of the different regions.
