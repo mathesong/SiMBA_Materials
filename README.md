@@ -1,5 +1,3 @@
 # SiMBA Materials
 
-This repository contains code that enables application of Simultaneous Multifactor Bayesian Analysis (SiMBA), for PET time activity curve data.  The code was written by Granville Matheson, Columbia University, 2021.  To execute the code, you need R and STAN.
-
-I share the code used to 
+This repository contains the materials for our manuscript *Simultaneous Multifactor Bayesian Analysis (SiMBA) of PET Time Activity Curve Data*, by Granville J. Matheson and R. Todd Ogden at Columbia University. Please find the full report in the `R` folder.

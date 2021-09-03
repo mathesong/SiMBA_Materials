@@ -2,9 +2,10 @@
 title: "SiMBA Demonstration"
 always_allow_html: true
 output:
+  github_document:
+    toc: yes
   html_document:
     df_print: paged
-    keep_md: yes
     toc: yes
     toc_float:
       toc_collapsed: yes
