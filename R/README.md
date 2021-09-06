@@ -35,6 +35,7 @@ SiMBA Demonstration
             data](#saving-and-modifying-the-brms-generated-stan-data)
     -   [Fitting directly](#fitting-directly)
 -   [Evaluating the model](#evaluating-the-model)
+    -   [Comparison of estimates](#comparison-of-estimates)
 
 # Aims
 
@@ -88,1218 +89,60 @@ head(simdat)
 skim(simdat)
 ```
 
-<table style="width: auto;" class="table table-condensed">
-<caption>
+|                                                  |        |
+|:-------------------------------------------------|:-------|
+| Name                                             | simdat |
+| Number of rows                                   | 3600   |
+| Number of columns                                | 31     |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |        |
+| Column type frequency:                           |        |
+| character                                        | 4      |
+| numeric                                          | 27     |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |        |
+| Group variables                                  | None   |
+
 Data summary
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Name
-</td>
-<td style="text-align:left;">
-simdat
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Number of rows
-</td>
-<td style="text-align:left;">
-3600
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Number of columns
-</td>
-<td style="text-align:left;">
-31
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Column type frequency:
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-character
-</td>
-<td style="text-align:left;">
-4
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-27
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Group variables
-</td>
-<td style="text-align:left;">
-None
-</td>
-</tr>
-</tbody>
-</table>
 
 **Variable type: character**
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-skim\_variable
-</th>
-<th style="text-align:right;">
-n\_missing
-</th>
-<th style="text-align:right;">
-complete\_rate
-</th>
-<th style="text-align:right;">
-min
-</th>
-<th style="text-align:right;">
-max
-</th>
-<th style="text-align:right;">
-empty
-</th>
-<th style="text-align:right;">
-n\_unique
-</th>
-<th style="text-align:right;">
-whitespace
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Regions
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sigma
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Region
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-15
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Group
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-</tbody>
-</table>
+| skim\_variable | n\_missing | complete\_rate | min | max | empty | n\_unique | whitespace |
+|:---------------|-----------:|---------------:|----:|----:|------:|----------:|-----------:|
+| Regions        |          0 |              1 |   3 |   3 |     0 |         1 |          0 |
+| sigma          |          0 |              1 |   3 |   3 |     0 |         1 |          0 |
+| Region         |          0 |              1 |   3 |  15 |     0 |         9 |          0 |
+| Group          |          0 |              1 |   7 |   7 |     0 |         2 |          0 |
 
 **Variable type: numeric**
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-skim\_variable
-</th>
-<th style="text-align:right;">
-n\_missing
-</th>
-<th style="text-align:right;">
-complete\_rate
-</th>
-<th style="text-align:right;">
-mean
-</th>
-<th style="text-align:right;">
-sd
-</th>
-<th style="text-align:right;">
-p0
-</th>
-<th style="text-align:right;">
-p25
-</th>
-<th style="text-align:right;">
-p50
-</th>
-<th style="text-align:right;">
-p75
-</th>
-<th style="text-align:right;">
-p100
-</th>
-<th style="text-align:left;">
-hist
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-n
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:left;">
-▁▁▇▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Difference
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:left;">
-▁▁▇▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-logK1\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--2.47
-</td>
-<td style="text-align:right;">
-0.30
-</td>
-<td style="text-align:right;">
--3.35
-</td>
-<td style="text-align:right;">
--2.70
-</td>
-<td style="text-align:right;">
--2.45
-</td>
-<td style="text-align:right;">
--2.25
-</td>
-<td style="text-align:right;">
--1.88
-</td>
-<td style="text-align:left;">
-▁▃▆▇▃
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-logBPnd\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1.99
-</td>
-<td style="text-align:right;">
-0.39
-</td>
-<td style="text-align:right;">
-1.26
-</td>
-<td style="text-align:right;">
-1.64
-</td>
-<td style="text-align:right;">
-2.00
-</td>
-<td style="text-align:right;">
-2.27
-</td>
-<td style="text-align:right;">
-2.97
-</td>
-<td style="text-align:left;">
-▆▆▇▅▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-logVnd\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--0.59
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
--1.71
-</td>
-<td style="text-align:right;">
--0.80
-</td>
-<td style="text-align:right;">
--0.59
-</td>
-<td style="text-align:right;">
--0.29
-</td>
-<td style="text-align:right;">
-0.40
-</td>
-<td style="text-align:left;">
-▂▂▇▆▂
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-logk4\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--3.82
-</td>
-<td style="text-align:right;">
-0.20
-</td>
-<td style="text-align:right;">
--4.46
-</td>
-<td style="text-align:right;">
--3.96
-</td>
-<td style="text-align:right;">
--3.77
-</td>
-<td style="text-align:right;">
--3.67
-</td>
-<td style="text-align:right;">
--3.34
-</td>
-<td style="text-align:left;">
-▁▃▅▇▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-logvB\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--3.81
-</td>
-<td style="text-align:right;">
-0.71
-</td>
-<td style="text-align:right;">
--5.56
-</td>
-<td style="text-align:right;">
--4.29
-</td>
-<td style="text-align:right;">
--3.78
-</td>
-<td style="text-align:right;">
--3.46
-</td>
-<td style="text-align:right;">
--2.10
-</td>
-<td style="text-align:left;">
-▁▅▇▃▂
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sigma\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--4.23
-</td>
-<td style="text-align:right;">
-0.57
-</td>
-<td style="text-align:right;">
--5.53
-</td>
-<td style="text-align:right;">
--4.62
-</td>
-<td style="text-align:right;">
--4.26
-</td>
-<td style="text-align:right;">
--3.85
-</td>
-<td style="text-align:right;">
--2.40
-</td>
-<td style="text-align:left;">
-▂▇▇▂▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-inpshift\_mod
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--0.09
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
--0.24
-</td>
-<td style="text-align:right;">
--0.18
-</td>
-<td style="text-align:right;">
--0.10
-</td>
-<td style="text-align:right;">
--0.07
-</td>
-<td style="text-align:right;">
-0.35
-</td>
-<td style="text-align:left;">
-▇▇▂▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-A
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-27.66
-</td>
-<td style="text-align:right;">
-40.29
-</td>
-<td style="text-align:right;">
-0.19
-</td>
-<td style="text-align:right;">
-4.23
-</td>
-<td style="text-align:right;">
-13.44
-</td>
-<td style="text-align:right;">
-29.03
-</td>
-<td style="text-align:right;">
-181.70
-</td>
-<td style="text-align:left;">
-▇▂▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1.08
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-0.30
-</td>
-<td style="text-align:right;">
-0.73
-</td>
-<td style="text-align:right;">
-1.14
-</td>
-<td style="text-align:right;">
-1.32
-</td>
-<td style="text-align:right;">
-1.92
-</td>
-<td style="text-align:left;">
-▆▆▇▆▅
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-C
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.01
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.03
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.07
-</td>
-<td style="text-align:left;">
-▇▅▁▃▆
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-alpha
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2.80
-</td>
-<td style="text-align:right;">
-1.19
-</td>
-<td style="text-align:right;">
-0.49
-</td>
-<td style="text-align:right;">
-2.10
-</td>
-<td style="text-align:right;">
-3.06
-</td>
-<td style="text-align:right;">
-3.42
-</td>
-<td style="text-align:right;">
-4.90
-</td>
-<td style="text-align:left;">
-▆▃▇▇▆
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-beta
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.48
-</td>
-<td style="text-align:right;">
-0.14
-</td>
-<td style="text-align:right;">
-0.17
-</td>
-<td style="text-align:right;">
-0.39
-</td>
-<td style="text-align:right;">
-0.50
-</td>
-<td style="text-align:right;">
-0.58
-</td>
-<td style="text-align:right;">
-0.72
-</td>
-<td style="text-align:left;">
-▂▃▇▇▅
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-gamma
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.03
-</td>
-<td style="text-align:right;">
-0.01
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:left;">
-▆▁▂▆▇
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-peaktime
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1.06
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.82
-</td>
-<td style="text-align:right;">
-0.94
-</td>
-<td style="text-align:right;">
-1.06
-</td>
-<td style="text-align:right;">
-1.13
-</td>
-<td style="text-align:right;">
-1.57
-</td>
-<td style="text-align:left;">
-▆▇▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-peakval
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2.53
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.80
-</td>
-<td style="text-align:right;">
-1.92
-</td>
-<td style="text-align:right;">
-2.27
-</td>
-<td style="text-align:right;">
-3.26
-</td>
-<td style="text-align:right;">
-4.58
-</td>
-<td style="text-align:left;">
-▃▇▅▆▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-t0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.34
-</td>
-<td style="text-align:right;">
-0.15
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
-0.33
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-<td style="text-align:right;">
-0.76
-</td>
-<td style="text-align:left;">
-▅▅▇▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-slope
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3.89
-</td>
-<td style="text-align:right;">
-1.78
-</td>
-<td style="text-align:right;">
-0.85
-</td>
-<td style="text-align:right;">
-2.74
-</td>
-<td style="text-align:right;">
-3.69
-</td>
-<td style="text-align:right;">
-5.22
-</td>
-<td style="text-align:right;">
-7.93
-</td>
-<td style="text-align:left;">
-▅▇▅▇▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-t\_tac
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-32.36
-</td>
-<td style="text-align:right;">
-34.55
-</td>
-<td style="text-align:right;">
-0.17
-</td>
-<td style="text-align:right;">
-3.31
-</td>
-<td style="text-align:right;">
-15.12
-</td>
-<td style="text-align:right;">
-57.68
-</td>
-<td style="text-align:right;">
-105.24
-</td>
-<td style="text-align:left;">
-▇▂▂▂▂
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-durations
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-5.50
-</td>
-<td style="text-align:right;">
-4.25
-</td>
-<td style="text-align:right;">
-0.33
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-5.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:right;">
-10.00
-</td>
-<td style="text-align:left;">
-▇▁▂▁▇
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-meanblood
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.41
-</td>
-<td style="text-align:right;">
-0.58
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.55
-</td>
-<td style="text-align:right;">
-4.32
-</td>
-<td style="text-align:left;">
-▇▁▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sigwig
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.47
-</td>
-<td style="text-align:right;">
--0.62
-</td>
-<td style="text-align:right;">
--0.42
-</td>
-<td style="text-align:right;">
--0.06
-</td>
-<td style="text-align:right;">
-0.40
-</td>
-<td style="text-align:right;">
-0.80
-</td>
-<td style="text-align:left;">
-▇▅▃▃▅
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TAC
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-0.09
-</td>
-<td style="text-align:right;">
--0.29
-</td>
-<td style="text-align:right;">
-0.07
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-0.19
-</td>
-<td style="text-align:right;">
-0.58
-</td>
-<td style="text-align:left;">
-▁▂▇▂▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sigma\_w\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
--4.23
-</td>
-<td style="text-align:right;">
-0.74
-</td>
-<td style="text-align:right;">
--6.15
-</td>
-<td style="text-align:right;">
--4.76
-</td>
-<td style="text-align:right;">
--4.26
-</td>
-<td style="text-align:right;">
--3.72
-</td>
-<td style="text-align:right;">
--1.61
-</td>
-<td style="text-align:left;">
-▂▇▇▃▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TAC\_true
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-0.09
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.07
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-0.18
-</td>
-<td style="text-align:right;">
-0.59
-</td>
-<td style="text-align:left;">
-▇▆▂▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-WAYID
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-10.50
-</td>
-<td style="text-align:right;">
-5.77
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-5.75
-</td>
-<td style="text-align:right;">
-10.50
-</td>
-<td style="text-align:right;">
-15.25
-</td>
-<td style="text-align:right;">
-20.00
-</td>
-<td style="text-align:left;">
-▇▇▇▇▇
-</td>
-</tr>
-</tbody>
-</table>
+| skim\_variable | n\_missing | complete\_rate |  mean |    sd |    p0 |   p25 |   p50 |   p75 |   p100 | hist  |
+|:---------------|-----------:|---------------:|------:|------:|------:|------:|------:|------:|-------:|:------|
+| n              |          0 |              1 | 10.00 |  0.00 | 10.00 | 10.00 | 10.00 | 10.00 |  10.00 | ▁▁▇▁▁ |
+| Difference     |          0 |              1 |  0.18 |  0.00 |  0.18 |  0.18 |  0.18 |  0.18 |   0.18 | ▁▁▇▁▁ |
+| logK1\_true    |          0 |              1 | -2.47 |  0.30 | -3.35 | -2.70 | -2.45 | -2.25 |  -1.88 | ▁▃▆▇▃ |
+| logBPnd\_true  |          0 |              1 |  1.99 |  0.39 |  1.26 |  1.64 |  2.00 |  2.27 |   2.97 | ▆▆▇▅▁ |
+| logVnd\_true   |          0 |              1 | -0.59 |  0.44 | -1.71 | -0.80 | -0.59 | -0.29 |   0.40 | ▂▂▇▆▂ |
+| logk4\_true    |          0 |              1 | -3.82 |  0.20 | -4.46 | -3.96 | -3.77 | -3.67 |  -3.34 | ▁▃▅▇▁ |
+| logvB\_true    |          0 |              1 | -3.81 |  0.71 | -5.56 | -4.29 | -3.78 | -3.46 |  -2.10 | ▁▅▇▃▂ |
+| sigma\_true    |          0 |              1 | -4.23 |  0.57 | -5.53 | -4.62 | -4.26 | -3.85 |  -2.40 | ▂▇▇▂▁ |
+| inpshift\_mod  |          0 |              1 | -0.09 |  0.13 | -0.24 | -0.18 | -0.10 | -0.07 |   0.35 | ▇▇▂▁▁ |
+| A              |          0 |              1 | 27.66 | 40.29 |  0.19 |  4.23 | 13.44 | 29.03 | 181.70 | ▇▂▁▁▁ |
+| B              |          0 |              1 |  1.08 |  0.44 |  0.30 |  0.73 |  1.14 |  1.32 |   1.92 | ▆▆▇▆▅ |
+| C              |          0 |              1 |  0.04 |  0.02 |  0.01 |  0.02 |  0.03 |  0.05 |   0.07 | ▇▅▁▃▆ |
+| alpha          |          0 |              1 |  2.80 |  1.19 |  0.49 |  2.10 |  3.06 |  3.42 |   4.90 | ▆▃▇▇▆ |
+| beta           |          0 |              1 |  0.48 |  0.14 |  0.17 |  0.39 |  0.50 |  0.58 |   0.72 | ▂▃▇▇▅ |
+| gamma          |          0 |              1 |  0.03 |  0.01 |  0.02 |  0.02 |  0.04 |  0.04 |   0.04 | ▆▁▂▆▇ |
+| peaktime       |          0 |              1 |  1.06 |  0.18 |  0.82 |  0.94 |  1.06 |  1.13 |   1.57 | ▆▇▃▁▁ |
+| peakval        |          0 |              1 |  2.53 |  0.95 |  0.80 |  1.92 |  2.27 |  3.26 |   4.58 | ▃▇▅▆▁ |
+| t0             |          0 |              1 |  0.34 |  0.15 |  0.05 |  0.27 |  0.33 |  0.44 |   0.76 | ▅▅▇▁▁ |
+| slope          |          0 |              1 |  3.89 |  1.78 |  0.85 |  2.74 |  3.69 |  5.22 |   7.93 | ▅▇▅▇▁ |
+| t\_tac         |          0 |              1 | 32.36 | 34.55 |  0.17 |  3.31 | 15.12 | 57.68 | 105.24 | ▇▂▂▂▂ |
+| durations      |          0 |              1 |  5.50 |  4.25 |  0.33 |  1.00 |  5.00 | 10.00 |  10.00 | ▇▁▂▁▇ |
+| meanblood      |          0 |              1 |  0.41 |  0.58 |  0.00 |  0.05 |  0.18 |  0.55 |   4.32 | ▇▁▁▁▁ |
+| sigwig         |          0 |              1 |  0.00 |  0.47 | -0.62 | -0.42 | -0.06 |  0.40 |   0.80 | ▇▅▃▃▅ |
+| TAC            |          0 |              1 |  0.13 |  0.09 | -0.29 |  0.07 |  0.12 |  0.19 |   0.58 | ▁▂▇▂▁ |
+| sigma\_w\_true |          0 |              1 | -4.23 |  0.74 | -6.15 | -4.76 | -4.26 | -3.72 |  -1.61 | ▂▇▇▃▁ |
+| TAC\_true      |          0 |              1 |  0.13 |  0.09 |  0.00 |  0.07 |  0.12 |  0.18 |   0.59 | ▇▆▂▁▁ |
+| WAYID          |          0 |              1 | 10.50 |  5.77 |  1.00 |  5.75 | 10.50 | 15.25 |  20.00 | ▇▇▇▇▇ |
 
 ## Measured Data
 
@@ -1331,7 +174,7 @@ subjdat %>%
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Arterial Input function
 
@@ -1341,7 +184,6 @@ The AIF is modelled with a tri-exponential function.
 predict_aif <- function(time, t0, slope, peaktime, A, B, C, alpha, beta, gamma) {
   
   t_corr <- time - t0
-  t_after_peak <- time - peaktime
   
   if(t_corr <= 0) {
     pred <- 0
@@ -1354,9 +196,9 @@ predict_aif <- function(time, t0, slope, peaktime, A, B, C, alpha, beta, gamma) 
   }
   
   if(t_corr > peaktime) {
-    pred <- A*exp(-alpha*t_after_peak) + 
-      B*exp(-beta*t_after_peak) + 
-      C*exp(-gamma*t_after_peak)
+    pred <- A*exp(-alpha*t_corr) + 
+      B*exp(-beta*t_corr) + 
+      C*exp(-gamma*t_corr)
     return(pred)
   }
 }
@@ -1370,11 +212,11 @@ AIFdat <- tibble(
   AIF = aif
 )
 
-ggplot(AIFdat, aes(x=time, y=AIF)) + 
+ggplot(AIFdat, aes(x=time, y=AIF)) +
   geom_line(colour="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 So now, we can show the AIF and the TAC together.
 
@@ -1392,7 +234,7 @@ subjdat %>%
   coord_cartesian(ylim = c(-0.02, 0.3))
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ### Whole Blood
 
@@ -1414,7 +256,7 @@ ggplot(subjdat, aes(x=t_tac, y=TAC)) +
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Simulation Data
 
@@ -1439,7 +281,7 @@ subjdat %>%
        subtitle="Measurement error as a percentage of the mean value across the PET measurement")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 This function is partially related to the durations of the frames, but
 not completely.
@@ -1454,7 +296,7 @@ ggplot(data=subjdat, aes(x=t_tac, y=durations)) +
        subtitle="Frame durations over the course of the PET measurement")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 The true sigma at each point in time is taken from the addition of the
 true sigma for each ROI and individual, `sigma_true`, and adding
@@ -1477,7 +319,7 @@ subjdat %>%
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### Parameters by Region
 
@@ -1513,7 +355,7 @@ ggplot(pardat, aes(x=Value, colour=Region, fill=Region)) +
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 Note the regions are as follows:
 
@@ -1548,7 +390,7 @@ ggplot(parroidat, aes(x=Group, y=Value, colour=Group, fill=Group)) +
   facet_wrap(~Parameter, scales="free")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 This really speaks to the difficulty of sampling variation… Really hard
 to see anything at all there in BP<sub>ND</sub> in this particular
@@ -1705,7 +547,7 @@ ggplot(nls_simres, aes(x=logBPnd_true, y=logbpnd, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -1742,7 +584,7 @@ ggplot(nls_simres, aes(x=logBPp_true, y=logbpp, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -1779,7 +621,7 @@ ggplot(nls_simres, aes(x=logVt_true, y=logvt, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -1846,7 +688,7 @@ ggplot(nls_simres_t_bpnd, aes(x=Region, y=estimate)) +
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 #### BP<sub>P</sub>
 
@@ -1885,7 +727,7 @@ ggplot(nls_simres_t_bpp, aes(x=Region, y=estimate)) +
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 These are a bit closer, but the 95% CIs around the estimates are very
 wide…
@@ -1933,7 +775,7 @@ nls_simres_lme_bpnd %>%
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ### BP<sub>P</sub>
 
@@ -1973,7 +815,7 @@ nls_simres_lme_bpp %>%
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 And our estimate is much closer to reality.
 
 # SiMBA
@@ -3251,7 +2093,7 @@ hist(groupdif_samples, xlab="Group Difference", main="Group Difference Samples")
 abline(v=0.182,col="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 Here I show the posterior probability, with the true value (0.182,
 corresponding to 20%) marked in red. We could also transform this to
@@ -3263,7 +2105,7 @@ hist(100*(exp(groupdif_samples)-1), xlab="Group Difference (%)",
 abline(v=100*(exp(0.182)-1),col="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 We can also examine what the probability that the parameter is above
 zero, or the 95% credible intervals.
@@ -3288,7 +2130,7 @@ that this is log(sigma)
 conditional_smooths(brmsfit)
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 If we want to compare this to the simulated data, we can just transform
 it
@@ -3301,16 +2143,16 @@ smoothfit <- conditional_smooths(brmsfit)$`sigma: s(t_tac)` %>%
          upper__ = exp(upper__))
 
 ggplot(smoothfit, aes(y=estimate__, x=t_tac)) + 
-  geom_line() +
+  geom_line(colour = "blue") +
   geom_ribbon(aes(ymin=lower__, ymax=upper__), alpha=0.2) +
-  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="blue") +
+  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   labs(x="Time (min)",
        y="Relative Measurement Error",
        title="Fitted Smooth Function for Measurement Error",
-       subtitle="Fitted measurement error function in black with the grey 95% credible\ninterval with the true function in blue")
+       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true function in red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 We could also, for example, examine the different estimated
 V<sub>ND</sub> and v<sub>B</sub> values of the different regions.
@@ -3327,11 +2169,11 @@ re$Region[,,"logVnd_Intercept"] %>%
   ggplot(aes(x=Region, y=Vnd_perc)) +
   geom_point() + 
   geom_errorbar(aes(ymin=Vnd_perc_ci_lo, ymax=Vnd_perc_ci_hi), width=0.2) +
-  labs(y="Regional Vnd values relative to the mean (%)",
-       title="Regional Vnd values")
+  labs(y="Regional Vnd estimates relative to the mean (%)",
+       title="Regional Vnd estimates")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ``` r
 re$Region[,,"logvB_Intercept"] %>% 
@@ -3343,8 +2185,109 @@ re$Region[,,"logvB_Intercept"] %>%
   ggplot(aes(x=Region, y=vB_perc)) +
   geom_point() + 
   geom_errorbar(aes(ymin=vB_perc_ci_lo, ymax=vB_perc_ci_hi), width=0.2) +
-  labs(y="Regional vB values relative to the mean (%)",
-       title="Regional vB values")
+  labs(y="Regional vB estimates relative to the mean (%)",
+       title="Regional vB estimates")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-58-2.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
+
+## Comparison of estimates
+
+Now, let’s just compare the model estimates and their 95% intervals from
+all the different tests.
+
+``` r
+simcompare_nls_t_bpnd <- nls_simres_t_bpnd %>% 
+  select(Region, estimate, conf.low, conf.high) %>% 
+  mutate(estimate = -estimate,
+         conf.low = -conf.low,
+         conf.high = -conf.high) %>% 
+  mutate(Parameter = "BPND") %>% 
+  mutate(Test = paste0("NLS t-test"))
+
+simcompare_nls_t_bpp <- nls_simres_t_bpp %>% 
+  select(Region, estimate, conf.low, conf.high) %>% 
+  mutate(estimate = -estimate,
+         conf.low = -conf.low,
+         conf.high = -conf.high) %>% 
+  mutate(Parameter = "BPND") %>% 
+  mutate(Parameter = "BPP") %>% 
+  mutate(Test = paste0("NLS t-test"))
+  
+simcompare_nls_lme_bpnd <- nls_simres_lme_bpnd %>% 
+  filter(term == "GroupPatient") %>% 
+  mutate(Parameter = "BPND",
+         Region = "All Regions",
+         Test = paste0("NLS LME"),
+         conf.low = estimate + 1.96*std.error,
+         conf.high = estimate - 1.96*std.error) %>%
+  select(Region, estimate, conf.low, conf.high, Parameter, Test)
+
+simcompare_nls_lme_bpp <- nls_simres_lme_bpp %>% 
+  filter(term == "GroupPatient") %>% 
+  mutate(Parameter = "BPP",
+         Region = "All Regions",
+         Test = paste0("NLS LME"),
+         conf.low = estimate + 1.96*std.error,
+         conf.high = estimate - 1.96*std.error) %>%
+  select(Region, estimate, conf.low, conf.high, Parameter, Test)
+  
+simcompare_simba_bpnd <- tibble(
+  Region = "All Regions", estimate = mean(groupdif_samples),
+  conf.low = as.numeric(quantile(groupdif_samples, c(0.025))),
+  conf.high = as.numeric(quantile(groupdif_samples, c(0.975))),
+  Parameter = "BPND",
+  Test = "SiMBA"
+)
+
+
+# BPP has the same values, as no group differences estimated in Vnd
+simcompare_simba_bpp <- simcompare_simba_bpnd %>% 
+  mutate(Parameter = "BPP")
+
+simcompare <- bind_rows(simcompare_nls_t_bpnd, 
+                        simcompare_nls_t_bpp,
+                        simcompare_nls_lme_bpnd,
+                        simcompare_nls_lme_bpp,
+                        simcompare_nls_lme_bpnd,
+                        simcompare_simba_bpnd,
+                        simcompare_simba_bpp) %>% 
+  
+  mutate(Comparison = paste0(Test, ": ", Region)) %>% 
+  ungroup() %>% 
+  mutate(Comparison = fct_rev(fct_inorder(Comparison)))
+
+ggplot(simcompare, aes(x=Comparison, y=estimate)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, 
+                    ymax = conf.high), width=0.2) +
+  geom_hline(yintercept=0.182, colour="red", linetype="dashed") +
+  coord_flip() +
+  facet_grid(~Parameter, scales="free") +
+  labs(
+    title = "Model Group Difference Summaries : Log Scale",
+    subtitle = "Difference Estimates and their 95% Confidence/Credible Intervals\nwith the true difference indicated by the dashed red line",
+    y="Estimate (log scale)", x="Test"
+  )
+```
+
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+
+``` r
+simcompare %>% 
+  mutate(across(.cols = estimate:conf.high, ~100*(exp(.x)-1))) %>% 
+  ggplot(aes(x=Comparison, y=estimate)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, 
+                    ymax = conf.high), width=0.2) +
+  geom_hline(yintercept=20, colour="red", linetype="dashed") +
+  coord_flip() +
+  facet_grid(~Parameter, scales="free") +
+  labs(
+    title = "Model Group Difference Summaries : Percentage Scale",
+    subtitle = "Difference Estimates and their 95% Confidence/Credible Intervals\nwith the true difference indicated by the dashed red line",
+    y="Estimate (%)", x="Test"
+  )
+```
+
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->

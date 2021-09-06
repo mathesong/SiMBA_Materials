@@ -91,7 +91,6 @@ The AIF is modelled with a tri-exponential function.
 predict_aif <- function(time, t0, slope, peaktime, A, B, C, alpha, beta, gamma) {
   
   t_corr <- time - t0
-  t_after_peak <- time - peaktime
   
   if(t_corr <= 0) {
     pred <- 0
@@ -104,9 +103,9 @@ predict_aif <- function(time, t0, slope, peaktime, A, B, C, alpha, beta, gamma) 
   }
   
   if(t_corr > peaktime) {
-    pred <- A*exp(-alpha*t_after_peak) + 
-      B*exp(-beta*t_after_peak) + 
-      C*exp(-gamma*t_after_peak)
+    pred <- A*exp(-alpha*t_corr) + 
+      B*exp(-beta*t_corr) + 
+      C*exp(-gamma*t_corr)
     return(pred)
   }
 }
@@ -120,7 +119,7 @@ AIFdat <- tibble(
   AIF = aif
 )
 
-ggplot(AIFdat, aes(x=time, y=AIF)) + 
+ggplot(AIFdat, aes(x=time, y=AIF)) +
   geom_line(colour="red")
 ```
 
@@ -918,13 +917,13 @@ smoothfit <- conditional_smooths(brmsfit)$`sigma: s(t_tac)` %>%
          upper__ = exp(upper__))
 
 ggplot(smoothfit, aes(y=estimate__, x=t_tac)) + 
-  geom_line() +
+  geom_line(colour = "blue") +
   geom_ribbon(aes(ymin=lower__, ymax=upper__), alpha=0.2) +
-  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="blue") +
+  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   labs(x="Time (min)",
        y="Relative Measurement Error",
        title="Fitted Smooth Function for Measurement Error",
-       subtitle="Fitted measurement error function in black with the grey 95% credible\ninterval with the true function in blue")
+       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true function in red")
 ```
 
 
@@ -943,8 +942,8 @@ re$Region[,,"logVnd_Intercept"] %>%
   ggplot(aes(x=Region, y=Vnd_perc)) +
   geom_point() + 
   geom_errorbar(aes(ymin=Vnd_perc_ci_lo, ymax=Vnd_perc_ci_hi), width=0.2) +
-  labs(y="Regional Vnd values relative to the mean (%)",
-       title="Regional Vnd values")
+  labs(y="Regional Vnd estimates relative to the mean (%)",
+       title="Regional Vnd estimates")
 
 re$Region[,,"logvB_Intercept"] %>% 
   as_tibble(rownames = "Region") %>%
@@ -955,7 +954,101 @@ re$Region[,,"logvB_Intercept"] %>%
   ggplot(aes(x=Region, y=vB_perc)) +
   geom_point() + 
   geom_errorbar(aes(ymin=vB_perc_ci_lo, ymax=vB_perc_ci_hi), width=0.2) +
-  labs(y="Regional vB values relative to the mean (%)",
-       title="Regional vB values")
+  labs(y="Regional vB estimates relative to the mean (%)",
+       title="Regional vB estimates")
+```
+
+## Comparison of estimates
+
+Now, let's just compare the model estimates and their 95% intervals from all the different tests.
+
+```{r, fig.width=8}
+simcompare_nls_t_bpnd <- nls_simres_t_bpnd %>% 
+  select(Region, estimate, conf.low, conf.high) %>% 
+  mutate(estimate = -estimate,
+         conf.low = -conf.low,
+         conf.high = -conf.high) %>% 
+  mutate(Parameter = "BPND") %>% 
+  mutate(Test = paste0("NLS t-test"))
+
+simcompare_nls_t_bpp <- nls_simres_t_bpp %>% 
+  select(Region, estimate, conf.low, conf.high) %>% 
+  mutate(estimate = -estimate,
+         conf.low = -conf.low,
+         conf.high = -conf.high) %>% 
+  mutate(Parameter = "BPND") %>% 
+  mutate(Parameter = "BPP") %>% 
+  mutate(Test = paste0("NLS t-test"))
+  
+simcompare_nls_lme_bpnd <- nls_simres_lme_bpnd %>% 
+  filter(term == "GroupPatient") %>% 
+  mutate(Parameter = "BPND",
+         Region = "All Regions",
+         Test = paste0("NLS LME"),
+         conf.low = estimate + 1.96*std.error,
+         conf.high = estimate - 1.96*std.error) %>%
+  select(Region, estimate, conf.low, conf.high, Parameter, Test)
+
+simcompare_nls_lme_bpp <- nls_simres_lme_bpp %>% 
+  filter(term == "GroupPatient") %>% 
+  mutate(Parameter = "BPP",
+         Region = "All Regions",
+         Test = paste0("NLS LME"),
+         conf.low = estimate + 1.96*std.error,
+         conf.high = estimate - 1.96*std.error) %>%
+  select(Region, estimate, conf.low, conf.high, Parameter, Test)
+  
+simcompare_simba_bpnd <- tibble(
+  Region = "All Regions", estimate = mean(groupdif_samples),
+  conf.low = as.numeric(quantile(groupdif_samples, c(0.025))),
+  conf.high = as.numeric(quantile(groupdif_samples, c(0.975))),
+  Parameter = "BPND",
+  Test = "SiMBA"
+)
+
+
+# BPP has the same values, as no group differences estimated in Vnd
+simcompare_simba_bpp <- simcompare_simba_bpnd %>% 
+  mutate(Parameter = "BPP")
+
+simcompare <- bind_rows(simcompare_nls_t_bpnd, 
+                        simcompare_nls_t_bpp,
+                        simcompare_nls_lme_bpnd,
+                        simcompare_nls_lme_bpp,
+                        simcompare_nls_lme_bpnd,
+                        simcompare_simba_bpnd,
+                        simcompare_simba_bpp) %>% 
+  
+  mutate(Comparison = paste0(Test, ": ", Region)) %>% 
+  ungroup() %>% 
+  mutate(Comparison = fct_rev(fct_inorder(Comparison)))
+
+ggplot(simcompare, aes(x=Comparison, y=estimate)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, 
+                    ymax = conf.high), width=0.2) +
+  geom_hline(yintercept=0.182, colour="red", linetype="dashed") +
+  coord_flip() +
+  facet_grid(~Parameter, scales="free") +
+  labs(
+    title = "Model Group Difference Summaries : Log Scale",
+    subtitle = "Difference Estimates and their 95% Confidence/Credible Intervals\nwith the true difference indicated by the dashed red line",
+    y="Estimate (log scale)", x="Test"
+  )
+
+simcompare %>% 
+  mutate(across(.cols = estimate:conf.high, ~100*(exp(.x)-1))) %>% 
+  ggplot(aes(x=Comparison, y=estimate)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = conf.low, 
+                    ymax = conf.high), width=0.2) +
+  geom_hline(yintercept=20, colour="red", linetype="dashed") +
+  coord_flip() +
+  facet_grid(~Parameter, scales="free") +
+  labs(
+    title = "Model Group Difference Summaries : Percentage Scale",
+    subtitle = "Difference Estimates and their 95% Confidence/Credible Intervals\nwith the true difference indicated by the dashed red line",
+    y="Estimate (%)", x="Test"
+  )
 ```
 
