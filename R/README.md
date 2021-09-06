@@ -174,7 +174,7 @@ subjdat %>%
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ### Arterial Input function
 
@@ -216,7 +216,7 @@ ggplot(AIFdat, aes(x=time, y=AIF)) +
   geom_line(colour="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 So now, we can show the AIF and the TAC together.
 
@@ -234,7 +234,7 @@ subjdat %>%
   coord_cartesian(ylim = c(-0.02, 0.3))
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ### Whole Blood
 
@@ -256,7 +256,7 @@ ggplot(subjdat, aes(x=t_tac, y=TAC)) +
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Simulation Data
 
@@ -281,7 +281,7 @@ subjdat %>%
        subtitle="Measurement error as a percentage of the mean value across the PET measurement")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 This function is partially related to the durations of the frames, but
 not completely.
@@ -296,7 +296,7 @@ ggplot(data=subjdat, aes(x=t_tac, y=durations)) +
        subtitle="Frame durations over the course of the PET measurement")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 The true sigma at each point in time is taken from the addition of the
 true sigma for each ROI and individual, `sigma_true`, and adding
@@ -319,7 +319,7 @@ subjdat %>%
        y = "Radioactivity")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ### Parameters by Region
 
@@ -355,7 +355,7 @@ ggplot(pardat, aes(x=Value, colour=Region, fill=Region)) +
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 Note the regions are as follows:
 
@@ -390,7 +390,7 @@ ggplot(parroidat, aes(x=Group, y=Value, colour=Group, fill=Group)) +
   facet_wrap(~Parameter, scales="free")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 This really speaks to the difficulty of sampling variation… Really hard
 to see anything at all there in BP<sub>ND</sub> in this particular
@@ -547,7 +547,7 @@ ggplot(nls_simres, aes(x=logBPnd_true, y=logbpnd, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -584,7 +584,7 @@ ggplot(nls_simres, aes(x=logBPp_true, y=logbpp, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -621,7 +621,7 @@ ggplot(nls_simres, aes(x=logVt_true, y=logvt, colour=Region)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
 nls_simres %>% 
@@ -688,7 +688,7 @@ ggplot(nls_simres_t_bpnd, aes(x=Region, y=estimate)) +
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 #### BP<sub>P</sub>
 
@@ -727,7 +727,7 @@ ggplot(nls_simres_t_bpp, aes(x=Region, y=estimate)) +
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 These are a bit closer, but the 95% CIs around the estimates are very
 wide…
@@ -775,7 +775,7 @@ nls_simres_lme_bpnd %>%
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ### BP<sub>P</sub>
 
@@ -815,7 +815,7 @@ nls_simres_lme_bpp %>%
   coord_flip()
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 And our estimate is much closer to reality.
 
 # SiMBA
@@ -2093,7 +2093,7 @@ hist(groupdif_samples, xlab="Group Difference", main="Group Difference Samples")
 abline(v=0.182,col="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 Here I show the posterior probability, with the true value (0.182,
 corresponding to 20%) marked in red. We could also transform this to
@@ -2105,7 +2105,7 @@ hist(100*(exp(groupdif_samples)-1), xlab="Group Difference (%)",
 abline(v=100*(exp(0.182)-1),col="red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 We can also examine what the probability that the parameter is above
 zero, or the 95% credible intervals.
@@ -2130,7 +2130,7 @@ that this is log(sigma)
 conditional_smooths(brmsfit)
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 If we want to compare this to the simulated data, we can just transform
 it
@@ -2143,16 +2143,16 @@ smoothfit <- conditional_smooths(brmsfit)$`sigma: s(t_tac)` %>%
          upper__ = exp(upper__))
 
 ggplot(smoothfit, aes(y=estimate__, x=t_tac)) + 
+  geom_point(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   geom_line(colour = "blue") +
   geom_ribbon(aes(ymin=lower__, ymax=upper__), alpha=0.2) +
-  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   labs(x="Time (min)",
        y="Relative Measurement Error",
        title="Fitted Smooth Function for Measurement Error",
-       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true function in red")
+       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true values in red")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 We could also, for example, examine the different estimated
 V<sub>ND</sub> and v<sub>B</sub> values of the different regions.
@@ -2173,7 +2173,7 @@ re$Region[,,"logVnd_Intercept"] %>%
        title="Regional Vnd estimates")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 re$Region[,,"logvB_Intercept"] %>% 
@@ -2189,7 +2189,7 @@ re$Region[,,"logvB_Intercept"] %>%
        title="Regional vB estimates")
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-46-2.png)<!-- -->
 
 ## Comparison of estimates
 
@@ -2271,7 +2271,7 @@ ggplot(simcompare, aes(x=Comparison, y=estimate)) +
   )
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 ``` r
 simcompare %>% 
@@ -2290,4 +2290,4 @@ simcompare %>%
   )
 ```
 
-![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
+![](SiMBA_Demonstration_files/figure-gfm/unnamed-chunk-47-2.png)<!-- -->

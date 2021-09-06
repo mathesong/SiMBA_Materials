@@ -917,13 +917,13 @@ smoothfit <- conditional_smooths(brmsfit)$`sigma: s(t_tac)` %>%
          upper__ = exp(upper__))
 
 ggplot(smoothfit, aes(y=estimate__, x=t_tac)) + 
+  geom_point(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   geom_line(colour = "blue") +
   geom_ribbon(aes(ymin=lower__, ymax=upper__), alpha=0.2) +
-  geom_line(data=simdat, aes(x=t_tac, y=exp(sigwig)), colour="red") +
   labs(x="Time (min)",
        y="Relative Measurement Error",
        title="Fitted Smooth Function for Measurement Error",
-       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true function in red")
+       subtitle="Fitted measurement error function in blue with the grey 95% credible\ninterval with the true values in red")
 ```
 
 
